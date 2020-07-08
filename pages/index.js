@@ -1,65 +1,46 @@
 import Head from 'next/head'
+import React from 'react'
+import SearchBar from '../components/SearchBar'
+import axios from 'axios'
+import SnippetList from '../components/SnippetList'
 
-export default function Home() {
+export default class Home extends React.Component {
+  state = { snippets : [] };
+  onSearchSubmit = async (term) => {
+    const URL = `https://www.googleapis.com/customsearch/v1?key=AIzaSyD4OVqkvrP5E5a9ExfI_Fyrn7B5ySfaRwA&cx=007230486451918775841:rak4hilmdk9&q=${term}`;
+    const response = await axios.get(URL);
+  
+    this.setState({ snippets: response.data.items });
+  }
+  render(){
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>Ask Osho</title>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
       </Head>
 
       <main>
         <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          ask osho
         </h1>
-
+        <SearchBar onSubmit = {this.onSearchSubmit}/>
         <p className="description">
-          Get started by editing <code>pages/index.js</code>
+          say for example: <code>laughter</code>, <code>love</code>, <code>meditation</code>, <code>grace</code>
         </p>
 
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        <SnippetList snippets = {this.state.snippets}/>
       </main>
 
       <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-        </a>
+          github.com/shaileshTh<br/>
       </footer>
 
       <style jsx>{`
+        footer{
+          text-align:center;
+        }
         .container {
           min-height: 100vh;
           padding: 0 0.5rem;
@@ -70,7 +51,7 @@ export default function Home() {
         }
 
         main {
-          padding: 5rem 0;
+          padding: 1rem 0;
           flex: 1;
           display: flex;
           flex-direction: column;
@@ -86,33 +67,6 @@ export default function Home() {
           justify-content: center;
           align-items: center;
         }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .title a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-
-        .title a:hover,
-        .title a:focus,
-        .title a:active {
-          text-decoration: underline;
-        }
-
         .title {
           margin: 0;
           line-height: 1.15;
@@ -205,5 +159,5 @@ export default function Home() {
         }
       `}</style>
     </div>
-  )
+  )}
 }
